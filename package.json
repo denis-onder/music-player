@@ -1,0 +1,19 @@
+{
+  "name": "music-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "npm run scss && electron .",
+    "scss": "node-sass app/assets/scss -o app/assets/css",
+    "scss:watch": "node-sass --watch app/assets/scss -o app/assets/css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^7.1.2",
+    "node-sass": "^4.13.0"
+  },
+  "dependencies": {}
+}
