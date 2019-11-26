@@ -1,13 +1,16 @@
+const $ = id => document.getElementById(id);
 const fs = require("fs");
 const path = require("path");
-const output = document.getElementById("output");
-const playBtn = document.getElementById("controls_play");
-const pauseBtn = document.getElementById("controls_pause");
-const stopBtn = document.getElementById("controls_stop");
+const output = $("output");
+const playBtn = $("controls_play");
+const pauseBtn = $("controls_pause");
+const stopBtn = $("controls_stop");
+const audio = $("audio");
 
 const dirPath = path.join(__dirname, "../../../../", "Music");
 
 function renderSong(filename, filepath) {
+  // Work with only MP3 files
   if (filename.includes(".mp3")) {
     output.innerHTML += `
   <div class="output_song">
@@ -27,12 +30,12 @@ function attachPlayListener(target) {
 }
 
 function play(filepath) {
-  const song = new Audio(filepath);
-  song.play();
+  audio.src = filepath;
+  audio.play();
   // Attach listeners to controls
-  playBtn.onclick = () => song.play(); // Implement check to see if the song is actually playing
-  pauseBtn.onclick = () => song.pause();
-  stopBtn.onclick = () => song.stop();
+  playBtn.onclick = () => audio.play(); // Implement check to see if the audio is actually playing
+  pauseBtn.onclick = () => audio.pause();
+  stopBtn.onclick = () => (audio.src = "");
 }
 
 fs.readdir(dirPath, (err, files) =>
