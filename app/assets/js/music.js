@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const output = document.getElementById("output");
+const playBtn = document.getElementById("controls_play");
+const pauseBtn = document.getElementById("controls_pause");
+const stopBtn = document.getElementById("controls_stop");
 
 const dirPath = path.join(__dirname, "../../../../", "Music");
 
@@ -20,13 +23,18 @@ function renderSong(filename, filepath) {
 }
 
 function attachPlayListener(target) {
-  console.log(target);
   target.onclick = e => play(e.target.getAttribute("data-url"));
 }
 
 function play(filepath) {
-  new Audio(filepath).play();
+  const song = new Audio(filepath);
+  song.play();
+  // Attach listeners to controls
+  playBtn.onclick = () => song.play(); // Implement check to see if the song is actually playing
+  pauseBtn.onclick = () => song.pause();
+  stopBtn.onclick = () => song.stop();
 }
+
 fs.readdir(dirPath, (err, files) =>
   err
     ? console.error(err)

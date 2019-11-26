@@ -3,20 +3,32 @@
   flex-direction: column;
   width: 100%;
   .output_song {
-    &:nth-child(odd) {
-      background-color: #222;
-    }
+    padding: 0.5em 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     &_name {
-      margin: 10px 50px;
+      margin: auto auto auto 50px;
+      float: left;
       color: #fff;
     }
     &_play {
-      color: #fff;
-      background-color: $red;
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
       cursor: pointer;
+      color: #fff;
+      font-size: 32px;
+      float: right;
+      margin-right: 50px;
+      transition: all ease-in-out 0.2s;
+      &:hover {
+        color: $blue;
+      }
+      &[data-playing=""] {
+        color: $blue;
+      }
+    }
+    &:nth-child(odd) {
+      background-color: #222;
     }
   }
 }
