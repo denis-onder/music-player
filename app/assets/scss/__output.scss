@@ -21,14 +21,18 @@
       margin-right: 50px;
       transition: all ease-in-out 0.2s;
       &:hover {
-        color: $blue;
+        color: $lightblue;
       }
-      &[data-playing=""] {
-        color: $blue;
+      &[data-playing="true"] {
+        color: transparent;
+        cursor: auto;
       }
     }
     &:nth-child(odd) {
       background-color: #222;
+    }
+    &_open {
+      border-right: 5px solid $blue;
     }
   }
 }

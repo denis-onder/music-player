@@ -26,18 +26,41 @@ function renderSong(filename, filepath) {
 }
 
 function attachPlayListener(target) {
-  target.onclick = e => play(e.target.getAttribute("data-url"));
+  target.onclick = e => {
+    const { target } = e;
+    const src = target.getAttribute("data-url");
+    play.call(target, src);
+  };
 }
 
-function play(filepath) {
-  audio.src = filepath;
+function clear() {
+  // Reset icons
+  Array.from(document.getElementsByClassName("output_song_play")).map(elem =>
+    elem.removeAttribute("data-playing")
+  );
+}
+
+function attachControls() {
+  // NOTE: Add a toggle for the play button to be disabled/grayed out while the song is playing
+  playBtn.onclick = () => audio.play(); // Apparently, JS is smart enough not to play the song again if it's running w/o any preliminary checks
+  pauseBtn.onclick = () => audio.pause();
+  stopBtn.onclick = () => (audio.src = ""); // Run the clear function once the stop button has been pressed
+}
+
+function play(src) {
+  // Clear icons and border
+  clear();
+  // Set open attribute to icon
+  this.setAttribute("data-playing", "true");
+  audio.src = src;
   audio.play();
   // Attach listeners to controls
-  playBtn.onclick = () => audio.play(); // Implement check to see if the audio is actually playing
-  pauseBtn.onclick = () => audio.pause();
-  stopBtn.onclick = () => (audio.src = "");
+  attachControls();
+  // NOTE: It's weird, but that's how we will be pulling out song names
+  console.log(this.parentElement.firstChild.nextSibling.innerText);
 }
 
+// Find songs
 fs.readdir(dirPath, (err, files) =>
   err
     ? console.error(err)
