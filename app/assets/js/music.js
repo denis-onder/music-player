@@ -5,6 +5,7 @@ const output = $("output");
 const playBtn = $("controls_play");
 const pauseBtn = $("controls_pause");
 const stopBtn = $("controls_stop");
+const volume = $("controls_volume");
 const audio = $("audio");
 
 const dirPath = path.join(__dirname, "../../../../", "Music");
@@ -70,3 +71,6 @@ fs.readdir(dirPath, (err, files) =>
         renderSong(file, filepath);
       })
 );
+
+// Volume changer
+volume.oninput = () => (audio.volume = volume.value / 100);
