@@ -1,2 +1,10 @@
 @import "./imports/_vars";
 @import "./_controls";
+@import "./_output";
+
+body {
+  h1 {
+    margin: 25px 0 25px 50px;
+    font-size: 48px;
+  }
+}

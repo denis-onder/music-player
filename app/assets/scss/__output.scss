@@ -1,0 +1,22 @@
+#output {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .output_song {
+    &:nth-child(odd) {
+      background-color: #222;
+    }
+    &_name {
+      margin: 10px 50px;
+      color: #fff;
+    }
+    &_play {
+      color: #fff;
+      background-color: $red;
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+  }
+}
