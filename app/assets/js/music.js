@@ -18,7 +18,7 @@ const dirPath = path.join(__dirname, "../../../../", "Music");
 let files = [];
 
 // Index of current song
-let currentSong = 0;
+let currentSong;
 
 function renderSong(filename, filepath) {
   // Work with only MP3 files
@@ -82,18 +82,22 @@ function play(src) {
 
 function playNext() {
   const index = currentSong + 1;
-  const next = files[index];
-  currentSong = index;
-  const src = next.getAttribute("data-url");
-  play.call(next, src);
+  if (index < files.length) {
+    const next = files[index];
+    currentSong = index;
+    const src = next.getAttribute("data-url");
+    play.call(next, src);
+  }
 }
 
 function playPrev() {
   const index = currentSong - 1;
-  const next = files[index];
-  currentSong = index;
-  const src = next.getAttribute("data-url");
-  play.call(next, src);
+  if (index > 0) {
+    const next = files[index];
+    currentSong = index;
+    const src = next.getAttribute("data-url");
+    play.call(next, src);
+  }
 }
 
 // Find songs
