@@ -6,13 +6,15 @@
   "scripts": {
     "start": "npm run scss && electron .",
     "scss": "node-sass app/assets/scss -o app/assets/css",
-    "scss:watch": "node-sass --watch app/assets/scss -o app/assets/css"
+    "scss:watch": "node-sass --watch app/assets/scss -o app/assets/css",
+    "build": "electron-packager ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^7.1.2",
+    "electron-packager": "^14.1.1",
     "node-sass": "^4.13.0"
   },
   "dependencies": {}
