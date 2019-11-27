@@ -7,10 +7,18 @@ const pauseBtn = $("controls_pause");
 const stopBtn = $("controls_stop");
 const volume = $("controls_volume");
 const name = $("controls_name");
+const nextBtn = $("controls_next");
+const prevBtn = $("controls_prev");
 const audio = $("audio");
 
 // Directory path to folder in which the music is located
 const dirPath = path.join(__dirname, "../../../../", "Music");
+
+// All songs will be stored in this array
+let files = [];
+
+// Index of current song
+let currentSong = 0;
 
 function renderSong(filename, filepath) {
   // Work with only MP3 files
@@ -23,15 +31,18 @@ function renderSong(filename, filepath) {
   `;
   }
   // Attach play listeners
-  Array.from(document.getElementsByClassName("output_song_play")).map(
-    attachPlayListener
+  Array.from(document.getElementsByClassName("output_song_play")).map((e, i) =>
+    attachPlayListener(e, i)
   );
 }
 
-function attachPlayListener(target) {
+function attachPlayListener(target, index) {
+  // Add target song to files array
   target.onclick = e => {
     const { target } = e;
     const src = target.getAttribute("data-url");
+    // Set index
+    currentSong = index;
     play.call(target, src);
   };
 }
@@ -52,11 +63,13 @@ function attachControls() {
   playBtn.onclick = () => audio.play(); // Apparently, JS is smart enough not to play the song again if it's running w/o any preliminary checks
   pauseBtn.onclick = () => audio.pause();
   stopBtn.onclick = clear;
+  nextBtn.onclick = playNext;
+  prevBtn.onclick = playPrev;
 }
 
 function play(src) {
   clear();
-  // Set open attribute to icon
+  // Set playing attribute to icon
   this.setAttribute("data-playing", "true");
   audio.src = src;
   audio.play();
@@ -65,6 +78,22 @@ function play(src) {
   // NOTE: It's weird, but that's how we will be pulling out song names
   const songName = this.parentElement.firstChild.nextSibling.innerText;
   name.innerHTML = songName;
+}
+
+function playNext() {
+  const index = currentSong + 1;
+  const next = files[index];
+  currentSong = index;
+  const src = next.getAttribute("data-url");
+  play.call(next, src);
+}
+
+function playPrev() {
+  const index = currentSong - 1;
+  const next = files[index];
+  currentSong = index;
+  const src = next.getAttribute("data-url");
+  play.call(next, src);
 }
 
 // Find songs
@@ -77,6 +106,9 @@ fs.readdir(dirPath, (err, files) =>
         renderSong(file, filepath);
       })
 );
+
+// Set songs in the global files array
+files = document.getElementsByClassName("output_song_play");
 
 // Volume changer
 volume.oninput = () => (audio.volume = volume.value / 100);
