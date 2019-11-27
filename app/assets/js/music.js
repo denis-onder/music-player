@@ -9,6 +9,7 @@ const volume = $("controls_volume");
 const name = $("controls_name");
 const nextBtn = $("controls_next");
 const prevBtn = $("controls_prev");
+const shuffleBtn = $("controls_shuffle");
 const audio = $("audio");
 
 // Directory path to folder in which the music is located
@@ -20,6 +21,9 @@ let files = [];
 // Index of current song
 let currentSong;
 
+// Shuffle toggle
+let shuffle;
+
 function renderSong(filename, filepath) {
   // Work with only MP3 files
   if (filename.includes(".mp3")) {
@@ -29,11 +33,11 @@ function renderSong(filename, filepath) {
     <i class="fa fa-play-circle output_song_play" aria-hidden="true" data-url="${filepath}"></i>
   </div>
   `;
+    // Attach play listeners
+    Array.from(
+      document.getElementsByClassName("output_song_play")
+    ).map((e, i) => attachPlayListener(e, i));
   }
-  // Attach play listeners
-  Array.from(document.getElementsByClassName("output_song_play")).map((e, i) =>
-    attachPlayListener(e, i)
-  );
 }
 
 function attachPlayListener(target, index) {
@@ -65,6 +69,7 @@ function attachControls() {
   stopBtn.onclick = clear;
   nextBtn.onclick = playNext;
   prevBtn.onclick = playPrev;
+  shuffleBtn.onclick = toggleShuffle;
 }
 
 function play(src) {
@@ -78,15 +83,21 @@ function play(src) {
   // NOTE: It's weird, but that's how we will be pulling out song names
   const songName = this.parentElement.firstChild.nextSibling.innerText;
   name.innerHTML = songName;
+  // Play next song once the current one ends
+  audio.on("end", playNext);
 }
 
 function playNext() {
   const index = currentSong + 1;
   if (index < files.length) {
-    const next = files[index];
-    currentSong = index;
-    const src = next.getAttribute("data-url");
-    play.call(next, src);
+    if (shuffle) {
+      playShuffle();
+    } else {
+      const next = files[index];
+      currentSong = index;
+      const src = next.getAttribute("data-url");
+      play.call(next, src);
+    }
   }
 }
 
@@ -100,6 +111,25 @@ function playPrev() {
   }
 }
 
+function toggleShuffle() {
+  // NOTE: Add some sort of style to the button depending on shuffle state
+  shuffle = !shuffle;
+}
+
+function playShuffle() {
+  const index = Math.floor(Math.random() * files.length);
+  const song = files[index];
+  const src = song.getAttribute("data-url");
+  currentSong = index;
+  play.call(song, src);
+}
+
+// Set songs in the global files array
+files = document.getElementsByClassName("output_song_play");
+
+// Volume changer
+volume.oninput = () => (audio.volume = volume.value / 100);
+
 // Find songs
 fs.readdir(dirPath, (err, files) =>
   err
@@ -110,9 +140,3 @@ fs.readdir(dirPath, (err, files) =>
         renderSong(file, filepath);
       })
 );
-
-// Set songs in the global files array
-files = document.getElementsByClassName("output_song_play");
-
-// Volume changer
-volume.oninput = () => (audio.volume = volume.value / 100);
