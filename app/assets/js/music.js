@@ -6,6 +6,7 @@ const playBtn = $("controls_play");
 const pauseBtn = $("controls_pause");
 const stopBtn = $("controls_stop");
 const volume = $("controls_volume");
+const name = $("controls_name");
 const audio = $("audio");
 
 const dirPath = path.join(__dirname, "../../../../", "Music");
@@ -39,17 +40,20 @@ function clear() {
   Array.from(document.getElementsByClassName("output_song_play")).map(elem =>
     elem.removeAttribute("data-playing")
   );
+  // Reset current song name
+  name.innerHTML = "";
+  // Reset audio source
+  audio.src = "";
 }
 
 function attachControls() {
   // NOTE: Add a toggle for the play button to be disabled/grayed out while the song is playing
   playBtn.onclick = () => audio.play(); // Apparently, JS is smart enough not to play the song again if it's running w/o any preliminary checks
   pauseBtn.onclick = () => audio.pause();
-  stopBtn.onclick = () => (audio.src = ""); // Run the clear function once the stop button has been pressed
+  stopBtn.onclick = clear;
 }
 
 function play(src) {
-  // Clear icons and border
   clear();
   // Set open attribute to icon
   this.setAttribute("data-playing", "true");
@@ -58,7 +62,8 @@ function play(src) {
   // Attach listeners to controls
   attachControls();
   // NOTE: It's weird, but that's how we will be pulling out song names
-  console.log(this.parentElement.firstChild.nextSibling.innerText);
+  const songName = this.parentElement.firstChild.nextSibling.innerText;
+  name.innerHTML = songName;
 }
 
 // Find songs

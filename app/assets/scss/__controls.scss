@@ -22,8 +22,9 @@
 
 // Volume slider -> stole the CSS from some website
 input[type="range"] {
+  margin-right: 10px;
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  width: 50%; /* Specific width is required for Firefox. */
+  width: 20%; /* Specific width is required for Firefox. */
   background: transparent; /* Otherwise white in Chrome */
 }
 
