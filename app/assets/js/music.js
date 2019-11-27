@@ -98,6 +98,8 @@ function playNext() {
       const src = next.getAttribute("data-url");
       play.call(next, src);
     }
+  } else {
+    clear();
   }
 }
 
@@ -108,6 +110,8 @@ function playPrev() {
     currentSong = index;
     const src = next.getAttribute("data-url");
     play.call(next, src);
+  } else {
+    clear();
   }
 }
 
