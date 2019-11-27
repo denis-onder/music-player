@@ -9,6 +9,7 @@ const volume = $("controls_volume");
 const name = $("controls_name");
 const audio = $("audio");
 
+// Directory path to folder in which the music is located
 const dirPath = path.join(__dirname, "../../../../", "Music");
 
 function renderSong(filename, filepath) {
