@@ -84,7 +84,7 @@ function play(src) {
   const songName = this.parentElement.firstChild.nextSibling.innerText;
   name.innerHTML = songName;
   // Play next song once the current one ends
-  audio.on("end", playNext);
+  audio.addEventListener("ended", playNext);
 }
 
 function playNext() {
